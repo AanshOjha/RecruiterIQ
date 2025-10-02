@@ -1,10 +1,18 @@
-# Byte-compiled / optimized / DLL files
+# ==============================================
+# PROJECT: RecruiterIQ (Vue.js + FastAPI)
+# ==============================================
+
+# ==============================================
+# PYTHON / FASTAPI BACKEND
+# ==============================================
+
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
+
+.gitignore
 
 # Distribution / packaging
 .Python
@@ -20,88 +28,12 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# Virtual environments
 .env
 .venv
 env/
@@ -109,24 +41,14 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.python-version
 
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
+# FastAPI/Uvicorn specific
+*.log
+logs/
+.env.local
+.env.production
+.env.staging
 
 # Database files
 *.db
@@ -134,76 +56,141 @@ dmypy.json
 *.sqlite3
 app.db
 *.db-journal
+*.db-wal
+*.db-shm
 
-# FastAPI specific
-.env.local
-.env.production
-.env.staging
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
 
-# IDE specific files
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ==============================================
+# VUE.JS FRONTEND
+# ==============================================
+
+# Dependencies
+frontend/node_modules/
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Production builds
+frontend/dist/
+frontend/dist-ssr/
+dist-ssr/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.npm/
+.yarn/
+.pnpm/
+
+# Vite
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Frontend testing
+frontend/coverage/
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+*.tsbuildinfo
+*.local
+lerna-debug.log*
+
+# Package manager files (optional - uncomment if needed)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ==============================================
+# GENERAL PROJECT FILES
+# ==============================================
+
+# Environment variables
+*.env
+.env.*
+!.env.example
+
+# IDE files
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
 *~
-
-# MacOS
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# Log files
-*.log
-logs/
-
 # Temporary files
 *.tmp
 *.temp
+*.bak
+*.backup
 
-# SSL certificates (if any)
+# SSL certificates
 *.pem
 *.key
 *.crt
 *.cert
 
-# Backup files
-*.bak
-*.backup
-
-# Upload directories (if any)
+# Uploads and documents
+backend/uploads/
+backend/documents/
 uploads/
 media/
-
-# Static files cache
-staticfiles/
-
-# Documentation builds
-docs/build/
-
-# Coverage reports
-htmlcov/
-
-# Local configuration
-config.local.py
-local_settings.py
 
 # Session storage
 sessions/
 
-# Redis dump
+# Redis
 dump.rdb
 
-# Alembic migration files (optional - uncomment if you don't want to track migrations)
-# alembic/versions/*.py
+# ==============================================
+# PROJECT SPECIFIC
+# ==============================================
 
-# Node modules (if using any frontend tools)
-node_modules/
-package-lock.json
-yarn.lock
+# Resume documents (keep examples but ignore user uploads)
+backend/documents/*.pdf
+backend/documents/*.doc
+backend/documents/*.docx
+!backend/documents/example_*
 
-# Python virtual environments
-.python-version
-documents/
+# Assets that might be dynamically generated
+backend/assets/generated/
+
+# Local configuration overrides
+config.local.py
+local_settings.py

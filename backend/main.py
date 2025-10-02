@@ -729,7 +729,3 @@ async def get_dashboard_data(
     """Get dashboard data for current user"""
     dashboard_data = crud.get_user_dashboard_data(db, current_user.id)
     return dashboard_data
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
