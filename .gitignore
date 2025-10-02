@@ -82,7 +82,7 @@ dmypy.json
 .ipynb_checkpoints
 
 # ==============================================
-# VUE.JS FRONTEND
+# VUE.JS FRONTEND (Updated for Vuetify)
 # ==============================================
 
 # Dependencies
@@ -120,6 +120,14 @@ frontend/coverage/
 *.tsbuildinfo
 *.local
 lerna-debug.log*
+
+# Vuetify specific
+.vuetify/
+frontend/.vuetify/
+
+# Sass cache (if using custom Vuetify themes)
+.sass-cache/
+*.css.map
 
 # Package manager files (optional - uncomment if needed)
 # package-lock.json
