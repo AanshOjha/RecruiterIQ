@@ -12,8 +12,6 @@ __pycache__/
 *$py.class
 *.so
 
-.gitignore
-
 # Distribution / packaging
 .Python
 build/
@@ -85,13 +83,30 @@ dmypy.json
 # VUE.JS FRONTEND (Updated for Vuetify)
 # ==============================================
 
-# Dependencies
-frontend/node_modules/
-node_modules/
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.*.local
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Dependencies
+frontend/node_modules/
 
 # Production builds
 frontend/dist/
@@ -144,18 +159,10 @@ frontend/.vuetify/
 !.env.example
 
 # IDE files
-.vscode/
 !.vscode/extensions.json
-.idea/
 *.swp
 *.swo
 *~
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
 # Windows
 Thumbs.db
@@ -202,3 +209,7 @@ backend/assets/generated/
 # Local configuration overrides
 config.local.py
 local_settings.py
+.gitignore
+
+.github/
+.vscode/
