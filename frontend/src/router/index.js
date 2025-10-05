@@ -14,6 +14,31 @@ const router = createRouter({
   routes: setupLayouts(routes),
 })
 
+// Authentication guard
+router.beforeEach(async (to, from, next) => {
+  // Import auth store dynamically to avoid circular dependency
+  const { useAuthStore } = await import('@/stores/auth')
+  const authStore = useAuthStore()
+
+  const requiresAuth = to.matched.some(record => record.name === '/protected')
+  const isLoginPage = to.path === '/login'
+
+  if (requiresAuth && !authStore.isAuthenticated) {
+    // Redirect to login if trying to access protected route without auth
+    next('/login')
+  } else if (isLoginPage && authStore.isAuthenticated) {
+    // Redirect to protected route if already authenticated and trying to access login
+    const isValid = await authStore.checkAuth()
+    if (isValid) {
+      next('/protected')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
 // Workaround for https://github.com/vitejs/vite/issues/11804
 router.onError((err, to) => {
   if (err?.message?.includes?.('Failed to fetch dynamically imported module')) {

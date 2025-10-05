@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Response
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 
@@ -24,6 +25,15 @@ async def lifespan(app: FastAPI):
 # Initialize FastAPI app
 app = FastAPI(title="RecruiterIQ API", lifespan=lifespan)
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get('/')
 def home():
     """Health check endpoint"""
@@ -32,8 +42,8 @@ def home():
         "status": "running"
     }
 
-@app.post('/login', response_model=Token)
-def login(login_data: LoginRequest, db: Session = Depends(get_db)):
+@app.post('/login')
+def login(login_data: LoginRequest, response: Response, db: Session = Depends(get_db)):
     # Find user by email
     user = db.query(User).filter(User.email == login_data.email).first()
     
@@ -47,10 +57,34 @@ def login(login_data: LoginRequest, db: Session = Depends(get_db)):
     # Create access token
     access_token = create_access_token(data={"sub": user.email, "role": user.role.value})
     
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        secure=False,        # ← False for localhost
+        samesite="lax",
+        max_age=1800
+    )
+
+    # Return user info so frontend knows login was successful
     return {
-        "access_token": access_token,
-        "token_type": "bearer"
+        "message": "Login successful",
+        "user": {
+            "email": user.email,
+            "role": user.role.value
+        }
     }
+
+@app.post('/logout')
+def logout(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        httponly=False,
+        secure=False,
+        samesite="lax"
+    )
+    return {"message": "Logged out successfully"}
+
 
 @app.post('/register', response_model=UserResponse)
 def register(register_data: RegisterRequest, admin_user: User = Depends(verify_admin_token), db: Session = Depends(get_db)):
