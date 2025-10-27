@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
   const { useAuthStore } = await import('@/stores/auth')
   const authStore = useAuthStore()
 
-  const requiresAuth = to.matched.some(record => record.name === '/protected')
+  const requiresAuth = to.matched.some(record => record.name === '/home')
   const isLoginPage = to.path === '/login'
 
   if (requiresAuth && !authStore.isAuthenticated) {
@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
     // Redirect to protected route if already authenticated and trying to access login
     const isValid = await authStore.checkAuth()
     if (isValid) {
-      next('/protected')
+      next('/home')
     } else {
       next()
     }

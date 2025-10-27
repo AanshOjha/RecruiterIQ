@@ -35,14 +35,6 @@ class User(Base):
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role.value}')>"
 
-# Dependency to get database session
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 # Password utility functions
 def hash_password(password: str) -> str:
     password_bytes = password.encode('utf-8')
@@ -54,9 +46,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     hashed_bytes = hashed_password.encode('utf-8')
     return bcrypt.checkpw(password_bytes, hashed_bytes)
 
-# Create all tables
-def create_tables():
-    Base.metadata.create_all(bind=engine)
+# Dependency to get database session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-if __name__ == "__main__":
-    create_tables()

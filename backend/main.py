@@ -4,14 +4,14 @@ from sqlalchemy.orm import Session
 from contextlib import asynccontextmanager
 
 # Local imports
-from database import get_db, create_tables, User, UserRole, verify_password, hash_password
-from auth import create_access_token, verify_token, create_admin_user, verify_admin_token
-from models import LoginRequest, Token, RegisterRequest, UserResponse
+from database import Base, get_db, User, UserRole, verify_password, hash_password, engine
+from auth import create_access_token, verify_cookie, create_admin_user
+from models import LoginRequest, RegisterRequest, UserResponse
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    create_tables()
+    Base.metadata.create_all(bind=engine)
     db = next(get_db())
     try:
         create_admin_user(db)
@@ -36,7 +36,6 @@ app.add_middleware(
 
 @app.get('/')
 def home():
-    """Health check endpoint"""
     return {
         "message": "Welcome to RecruiterIQ API!",
         "status": "running"
@@ -86,10 +85,14 @@ def logout(response: Response):
     return {"message": "Logged out successfully"}
 
 
-@app.post('/register', response_model=UserResponse)
-def register(register_data: RegisterRequest, admin_user: User = Depends(verify_admin_token), db: Session = Depends(get_db)):
+@app.post('/create-user', response_model=UserResponse)
+def register(register_data: RegisterRequest, admin_user: User = Depends(verify_cookie), db: Session = Depends(get_db)):
     """Register new user - Admin only"""
     
+    # Ensure the current user is an admin
+    if admin_user.role != UserRole.admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+
     # Validate role
     valid_roles = ["admin", "recruiter", "hiring_manager"]
     if register_data.role not in valid_roles:
@@ -126,9 +129,8 @@ def register(register_data: RegisterRequest, admin_user: User = Depends(verify_a
         message="User created successfully"
     )
 
-@app.get('/protected')
-def protected_route(current_user_email: str = Depends(verify_token)):
-    """Example protected route"""
+@app.get('/home')
+def protected_route(current_user_email: str = Depends(verify_cookie)):
     return {
         "message": "This is a protected route",
         "user": current_user_email

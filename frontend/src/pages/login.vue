@@ -117,7 +117,7 @@ export default {
         await authStore.login(email.value, password.value)
         
         // If successful, redirect to protected page
-        router.push('/protected')
+        router.push('/home')
         
       } catch (error) {
         // Show error message

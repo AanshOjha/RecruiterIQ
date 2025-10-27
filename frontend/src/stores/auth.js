@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
   // Simple auth check function
   const checkAuth = async () => {
     try {
-      const response = await fetch('http://localhost:8000/protected', {
+      const response = await fetch('http://localhost:8000/home', {
         credentials: 'include' // ← Include cookies
       })
       

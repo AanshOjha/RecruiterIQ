@@ -33,7 +33,7 @@ onMounted(async () => {
   if (authStore.isAuthenticated) {
     const isValid = await authStore.checkAuth()
     if (isValid) {
-      router.push('/protected')
+      router.push('/home')
     }
   }
 })

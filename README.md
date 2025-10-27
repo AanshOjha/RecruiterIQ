@@ -58,7 +58,7 @@ The frontend will run on `http://localhost:5173`
 3. **Authentication**: Use the default admin credentials:
    - Email: `admin@recruiteriq.com`
    - Password: `admin123`
-4. **Protected Route**: After login, you'll be redirected to `/protected` (the dashboard)
+4. **Protected Route**: After login, you'll be redirected to `/home` (the dashboard)
 
 ## Architecture
 
